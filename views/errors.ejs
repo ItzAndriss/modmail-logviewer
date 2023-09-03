@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="<%- getLocale() %>">
+<head>
+    <title><%- __('default.title', { page_name: config.name })%></title>
+    <%- include("partials/head") %>
+</head>
+<body class="bg-white dark:bg-discord-300">
+    <%- navbar ? include("partials/navbar") : '' %>
+    <div class="py-24 sm:py-16">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+          <div class="mx-auto max-w-2xl text-center">
+            <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl"><%- __('default.title', { page_name: config.name }) %></p>
+            <p class="mt-4 text-lg leading-8 text-muted"><%- __('default.description') %></p>
+          </div>
+          <div class="mx-auto mt-4 max-w-2xl sm:mt-12 lg:mt-12 lg:max-w-4xl">
+            <div class="max-w-lg mx-auto bg-white dark:bg-discord-200 shadow-md rounded-lg overflow-hidden">
+                <div class="flex flex-col justify-center text-center px-4 py-6">
+                    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white"><%- __(title) %></h1>
+                    <% if(description){ %><p class="mt-2 text-lg leading-8 text-muted"><%- __(description) %></p><% }; %>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+</html>

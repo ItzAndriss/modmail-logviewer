@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="<%- getLocale() %>">
+<head>
+    <title><%- __('thread.title', { page_name: config.name }) %></title>
+    <%- include("partials/head") %>
+</head>
+<body class="bg-white dark:bg-discord-300">
+    <%- include("partials/navbar") %>
+    <div class="container mx-auto py-8">
+        <div class="max-w-lg mx-auto bg-white dark:bg-discord-200 shadow-md rounded-lg overflow-hidden mb-6">
+            <div class="px-4 py-4 overflow-y-scroll max-h-[12rem]">
+                <div class="p-3 rounded-lg mb-2 bg-white dark:bg-discord-100">
+                    <div class="flex justify-between">
+                        <div class="flex">
+                            <div class="self-center">
+                                <img src="<%- data.recipient.avatar_url %>" onerror="this.src='<%- data.recipient.default_avatar_url %>'" alt="Felhasználó" class="w-14 h-14 md:w-16 md:h-16 rounded-full">
+                            </div>
+                            <div class="ml-2">
+                                <p class="block font-semibold text-xl text-gray-900 dark:text-white">
+                                    <%- __('thread.header') %>
+                                    <span class="text-muted font-normal text-sm">(<%- data.open ? __('thread.opened') : __('thread.closed') %>)</span>
+                                </p>
+                                <p class="block text-gray-600 dark:text-gray-100">
+                                    <%- __('thread.recipient') %>
+                                    <%- data.recipient.name %><% if(data.recipient.discriminator !== "0"){%> <span class="text-muted text-sm">#<%- data.recipient.discriminator %></span><%};%>
+                                </p>
+                                <p class="block text-gray-600 dark:text-gray-100">
+                                    <%- data.messages.length === 1 ? __('default.message') : __('default.messages', data.messages.length) %>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <%if(internal){%>
+                            <div class="switch inline-flex justify-end w-9 h-5 relative" id="internal_toggle">
+                                <input type="checkbox" class="opacity-0 w-0 h-0" />
+                                <label class="absolute rounded-full cursor-pointer top-0 left-0 right-0 bottom-0 bg-blurple"></label>
+                                <label class="absolute rounded-full cursor-pointer before:rounded-full self-center h-3 w-3 left-[3.2] mr-[1.3rem] bottom-[3.2] bg-discord-100 btn"></label>
+                            </div>
+                            <%}%>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-lg mx-auto bg-white dark:bg-discord-200 shadow-md rounded-lg overflow-hidden">
+            <div class="px-4 py-6 overflow-y-scroll max-h-[43rem]">
+                <% for (let i = 0; i < data.messages.length; i++) { let msg = data.messages[i] %>
+                <div class="<%- msg.type === 'internal' ? msg.type+' hidden' : msg.type %> p-3 rounded-lg mb-4 bg-white dark:bg-discord-100">
+                    <div class="flex justify-between">
+                        <div class="flex items-center">
+                            <img src="<%- msg.author.avatar_url %>" onerror="this.src='<%- msg.author.default_avatar_url %>'" alt="Felhasználó" class="w-8 h-8 rounded-full">
+                            <span class="ml-2 font-semibold text-gray-600 dark:text-gray-100"><%- msg.author.name %></span>
+                            <% if(msg.type === "thread_message"){%>
+                                <% if(msg.author.mod){%>
+                                  <span class="bg-green text-gray-200 px-2 py-1 font-bold text-sm rounded-full ml-2">Válasz</span>
+                                <% } %>
+                            <% }else if(msg.type === "anonymous"){ %>
+                                <span class="bg-green text-gray-200 px-2 py-1 font-bold text-sm rounded-full ml-2">Válasz</span>
+                            <% }else if(msg.type === "internal"){ %>
+                                <span class="bg-yellow text-gray-500 px-2 py-1 font-bold text-sm rounded-full ml-2">Belső</span>
+                            <% }else{ %>
+                                <span class="bg-blurple text-gray-200 px-2 py-1 font-bold text-sm rounded-full ml-2">jegyzet</span>
+                            <% } %>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-sm text-muted"><%- moment(msg.timestamp).locale(getLocale()).fromNow() %></span>
+                        </div>
+                    </div>
+                    <% if(msg.content.length){ %>
+                        <p class="mt-2 text-gray-900 dark:text-white"><%- msg.content %></p>
+                    <% } %>
+                </div>
+                <% }; %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
