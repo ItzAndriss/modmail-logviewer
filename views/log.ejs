@@ -65,6 +65,13 @@
                         </div>
                         <div class="flex items-start">
                             <span class="text-sm text-muted"><%- moment(msg.timestamp).locale(getLocale()).fromNow() %></span>
+                            <%if(msg.attachments.length){%>
+                                <div class="flex flex-col">
+                                    <% for (let i = 0; i < msg.attachments.length; i++) { let attachment = msg.attachments[i] %>
+                                    <img src="<%- attachment.url %>" class="rounded-lg" alt="attachment">
+                                    <%};%>
+                                </div>
+                            <%};%>
                         </div>
                     </div>
                     <% if(msg.content.length){ %>
